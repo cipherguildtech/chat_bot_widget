@@ -9,7 +9,7 @@ import "./styles/widget.css";
 declare global {
   interface Window {
     MyWidget?: {
-      apiKey?: string;
+      // apiKey?: string;
       theme?: "light" | "dark";
     };
   }

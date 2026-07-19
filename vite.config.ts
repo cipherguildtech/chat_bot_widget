@@ -4,6 +4,10 @@ import { resolve } from "path";
 
 export default defineConfig({
   plugins: [react()],
+   define: {
+    "process.env.NODE_ENV": JSON.stringify("production"),
+    "process.env": {},
+  },
   build: {
     lib: {
       entry: resolve(__dirname, "src/index.tsx"),
@@ -12,7 +16,12 @@ export default defineConfig({
       formats: ["iife"],
     },
     cssCodeSplit: false,
-    emptyOutDir: true,
+    rollupOptions: {
+      output: {
+        inlineDynamicImports: true,
+      },
+    },
+    // emptyOutDir: true,
   },
 });
 
