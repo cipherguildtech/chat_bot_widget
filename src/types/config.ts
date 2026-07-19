@@ -1,4 +1,4 @@
 export interface WidgetConfig {
-  apiKey?: string;
+  // apiKey?: string;
   theme?: "light" | "dark";
 }
