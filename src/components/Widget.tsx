@@ -1,15 +1,15 @@
-import { useState } from "react";
-import FloatingButton from "./FloatingButton";
-import ChatWindow from "./ChatWindow";
+// import { useState } from "react";
+// import FloatingButton from "./FloatingButton";
+// import ChatWindow from "./ChatWindow";
 
-export default function Widget() {
-  const [open, setOpen] = useState(false);
+// export default function Widget() {
+//   const [open, setOpen] = useState(false);
 
-  return (
-    <>
-      {open && <ChatWindow onClose={() => setOpen(false)} />}
+//   return (
+//     <>
+//       {open && <ChatWindow onClose={() => setOpen(false)} />}
 
-      <FloatingButton onClick={() => setOpen(!open)} />
-    </>
-  );
-}
+//       <FloatingButton onClick={() => setOpen(!open)} />
+//     </>
+//   );
+// }
