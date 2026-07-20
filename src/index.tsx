@@ -1,10 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-
-import Widget from "./components/Widget";
 import { createShadowRoot } from "./lib/shadowRoot";
 
 import "./styles/widget.css";
+import App from "./App";
 
 declare global {
   interface Window {
@@ -24,7 +23,7 @@ declare global {
 
   ReactDOM.createRoot(mountPoint).render(
     <React.StrictMode>
-      <Widget />
+      <App/>
     </React.StrictMode>
   );
 })();

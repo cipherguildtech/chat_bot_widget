@@ -1,11 +1,11 @@
-import Widget from "./components/Widget";
 
+import FloatingAIBot from "./components/FloatingAIBot";
 export default function App() {
   return (
     <div style={{ padding: 50 }}>
       <h1>Widget Playground</h1>
 
-      <Widget />
+      <FloatingAIBot />
     </div>
   );
 }
