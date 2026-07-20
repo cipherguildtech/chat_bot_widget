@@ -3,7 +3,6 @@ import FloatingAIBot from "./components/FloatingAIBot";
 export default function App() {
   return (
     <div style={{ padding: 50 }}>
-      <h1>Widget Playground</h1>
 
       <FloatingAIBot />
     </div>
