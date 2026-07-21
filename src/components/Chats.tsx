@@ -93,7 +93,7 @@ const Chats: React.FC<ChatsProps> = ({
             />
           ))}
         </span>
-        <span className="text-xs text-white/60">AI is thinking...</span>
+        <span className="text-xs text-white/60">thinking...</span>
       </div>
     </motion.div>
   );
