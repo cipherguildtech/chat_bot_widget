@@ -19,8 +19,8 @@ const Chats: React.FC<ChatsProps> = ({
   const MessageBubble = ({ message, index }: { message: Message; index: number }) => (
     <motion.div
       key={message.id}
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 1, y: 10 }}
+      animate={{ opacity: 1, y: 10 }}
       transition={{ delay: index * 0.05 }}
       className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
     >
@@ -66,7 +66,7 @@ const Chats: React.FC<ChatsProps> = ({
 
   const TypingIndicator = () => (
     <motion.div
-      initial={{ opacity: 0 }}
+      initial={{ opacity: 1 }}
       animate={{ opacity: 1 }}
       className="flex justify-start"
     >
