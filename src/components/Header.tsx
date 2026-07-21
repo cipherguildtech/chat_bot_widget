@@ -1,6 +1,6 @@
 import React from 'react';
-import { X, Minimize2, Maximize2 } from 'lucide-react';
-
+import { X,  } from 'lucide-react';
+//Minimize2, Maximize2
 interface HeaderProps {
   isMinimized: boolean;
   onToggleMinimize: () => void;
@@ -8,8 +8,8 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({
-  isMinimized,
-  onToggleMinimize,
+  // isMinimized,
+  // onToggleMinimize,
   onToggleChat,
 }) => {
   return (
