@@ -32,16 +32,31 @@ const Chats: React.FC<ChatsProps> = ({
               background: 'linear-gradient(135deg, #25D366 0%, #128C7E 100%)',
               color: 'white',
               borderBottomRightRadius: 4,
+              // Add these for text wrapping
+              wordWrap: 'break-word',
+              overflowWrap: 'break-word',
+              whiteSpace: 'pre-wrap',
             }
             : {
               background: 'rgba(255,255,255,0.08)',
               color: '#E5E7EB',
               border: '1px solid rgba(255,255,255,0.05)',
               borderBottomLeftRadius: 4,
+              // Add these for text wrapping
+              wordWrap: 'break-word',
+              overflowWrap: 'break-word',
+              whiteSpace: 'pre-wrap',
             }
         }
       >
-        <p>{message.content}</p>
+        <p style={{
+          margin: 0,
+          wordWrap: 'break-word',
+          overflowWrap: 'break-word',
+          whiteSpace: 'pre-wrap'
+        }}>
+          {message.content}
+        </p>
         <span className="text-[10px] opacity-60 mt-1 block text-right">
           {formatTime(message.timestamp)}
         </span>

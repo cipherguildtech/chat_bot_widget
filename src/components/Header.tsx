@@ -26,13 +26,13 @@ const Header: React.FC<HeaderProps> = ({
       </div>
 
       <div className="flex items-center gap-1 text-white/70">
-        <button
+        {/* <button
           onClick={onToggleMinimize}
           className="p-2 hover:bg-white/10 rounded-lg transition-colors"
           aria-label={isMinimized ? 'Maximize' : 'Minimize'}
         >
           {isMinimized ? <Maximize2 className="w-4 h-4" /> : <Minimize2 className="w-4 h-4" />}
-        </button>
+        </button> */}
         <button
           onClick={onToggleChat}
           className="p-2 hover:bg-white/10 rounded-lg transition-colors"
