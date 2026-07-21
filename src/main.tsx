@@ -2,8 +2,65 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
+import WidgetTracker from './utils/tracking';
 import './index.css';
 
+// Initialize widget
+const initializeWidget = () => {
+  // Create container if it doesn't exist
+  let container = document.getElementById('chat-widget-root');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'chat-widget-root';
+    document.body.appendChild(container);
+  }
+
+  // Track installation early so the widget origin is recorded as soon as it initializes.
+  void WidgetTracker.trackInstallation();
+
+  // Render the widget
+  const root = ReactDOM.createRoot(container);
+  root.render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  );
+};
+
+// Auto-initialize if script is loaded
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initializeWidget);
+} else {
+  initializeWidget();
+}
+
+// import React from "react";
+// import ReactDOM from "react-dom/client";
+// import App from "./App";
+// import "./index.css";
+
+// ReactDOM.createRoot(document.getElementById("root")!).render(
+//   <React.StrictMode>
+//     <App />
+//   </React.StrictMode>
+// );
+
+// import { StrictMode } from 'react'
+// import { createRoot } from 'react-dom/client'
+// import './index.css'
+// import App from './App.tsx'
+
+// createRoot(document.getElementById('root')!).render(
+//   <StrictMode>
+//     <App />
+//   </StrictMode>,
+// )
+
+// import React from 'react';
+// import ReactDOM from 'react-dom/client';
+// import App from './App';
+// import './index.css';
+// 
 // Track widget installation
 // const trackWidgetInstallation = async () => {
 //   try {
@@ -27,36 +84,36 @@ import './index.css';
 //     console.warn('Tracking error:', error);
 //   }
 // };
-
+// 
 // Initialize widget
-const initializeWidget = () => {
+// const initializeWidget = () => {
   // Create container if it doesn't exist
-  let container = document.getElementById('chat-widget-root');
-  if (!container) {
-    container = document.createElement('div');
-    container.id = 'chat-widget-root';
-    document.body.appendChild(container);
-  }
-
+  // let container = document.getElementById('chat-widget-root');
+  // if (!container) {
+    // container = document.createElement('div');
+    // container.id = 'chat-widget-root';
+    // document.body.appendChild(container);
+  // }
+// 
   // Track installation
   // trackWidgetInstallation();
-
+// 
   // Render the widget
-  const root = ReactDOM.createRoot(container);
-  root.render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  );
-};
-
+  // const root = ReactDOM.createRoot(container);
+  // root.render(
+    // <React.StrictMode>
+      {/* <App /> */}
+    {/* </React.StrictMode> */}
+  // );
+// };
+// 
 // Auto-initialize if script is loaded
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initializeWidget);
-} else {
-  initializeWidget();
-}
-
+// if (document.readyState === 'loading') {
+  // document.addEventListener('DOMContentLoaded', initializeWidget);
+// } else {
+  // initializeWidget();
+// }
+// 
 // import React from "react";
 // import ReactDOM from "react-dom/client";
 // import App from "./App";
