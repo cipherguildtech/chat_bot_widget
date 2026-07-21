@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import type { Message } from '../types';
-
+import './Chats.css';
 interface ChatsProps {
   messages: Message[];
   isLoading: boolean;
@@ -99,47 +99,49 @@ const Chats: React.FC<ChatsProps> = ({
   );
 
   // Custom scrollbar styles
-  const scrollbarStyles = {
-    // For Webkit browsers (Chrome, Safari, Edge)
-    '&::-webkit-scrollbar': {
-      width: '6px',
-      height: '6px',
-    },
-    '&::-webkit-scrollbar-track': {
-      background: 'rgba(255, 255, 255, 0.05)',
-      borderRadius: '10px',
-      margin: '4px 0',
-    },
-    '&::-webkit-scrollbar-thumb': {
-      background: 'linear-gradient(180deg, #25D366 0%, #128C7E 100%)',
-      borderRadius: '10px',
-      transition: 'all 0.3s ease',
-    },
-    '&::-webkit-scrollbar-thumb:hover': {
-      background: 'linear-gradient(180deg, #2dde72 0%, #15a085 100%)',
-      cursor: 'pointer',
-    },
-    // For Firefox
-    scrollbarWidth: 'thin',
-    scrollbarColor: '#25D366 rgba(255, 255, 255, 0.05)',
-  };
+  // const scrollbarStyles = {
+  //   // For Webkit browsers (Chrome, Safari, Edge)
+  //   '&::-webkit-scrollbar': {
+  //     width: '6px',
+  //     height: '6px',
+  //   },
+  //   '&::-webkit-scrollbar-track': {
+  //     background: 'rgba(255, 255, 255, 0.05)',
+  //     borderRadius: '10px',
+  //     margin: '4px 0',
+  //   },
+  //   '&::-webkit-scrollbar-thumb': {
+  //     background: 'linear-gradient(180deg, #25D366 0%, #128C7E 100%)',
+  //     borderRadius: '10px',
+  //     transition: 'all 0.3s ease',
+  //   },
+  //   '&::-webkit-scrollbar-thumb:hover': {
+  //     background: 'linear-gradient(180deg, #2dde72 0%, #15a085 100%)',
+  //     cursor: 'pointer',
+  //   },
+  //   // For Firefox
+  //   scrollbarWidth: 'thin',
+  //   scrollbarColor: '#25D366 rgba(255, 255, 255, 0.05)',
+  // };
 
   return (
-    <div
-      className="flex-1 overflow-y-auto px-4 py-4 space-y-3"
-      style={{
-        overflowY: 'auto',
-        overscrollBehavior: 'contain',
-        ...scrollbarStyles,
-        // Smooth scrolling
-        scrollBehavior: 'smooth',
-        // Padding for better scroll visibility
-        paddingRight: '16px',
-        paddingLeft: '16px',
-        // Gradient overlay for scroll indication
-        position: 'relative',
-      }}
-    >
+    // <div
+    //   className="flex-1 overflow-y-auto px-4 py-4 space-y-3"
+    //   style={{
+    //     overflowY: 'auto',
+    //     overscrollBehavior: 'contain',
+    //     ...scrollbarStyles,
+    //     // Smooth scrolling
+    //     scrollBehavior: 'smooth',
+    //     // Padding for better scroll visibility
+    //     paddingRight: '16px',
+    //     paddingLeft: '16px',
+    //     // Gradient overlay for scroll indication
+    //     position: 'relative',
+    //   }}
+    // >
+    <div className="chat-scroll-container space-y-3">
+
       {/* Gradient overlay at bottom to indicate more messages */}
       <div
         style={{

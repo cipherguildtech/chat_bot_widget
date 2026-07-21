@@ -1,0 +1,38 @@
+/* Chats.css */
+.chat-scroll-container {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scroll-behavior: smooth;
+  padding: 16px 16px 4px 16px;
+  position: relative;
+}
+
+/* Custom scrollbar for Webkit browsers */
+.chat-scroll-container::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.chat-scroll-container::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  margin: 4px 0;
+}
+
+.chat-scroll-container::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #25D366 0%, #128C7E 100%);
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.chat-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #2dde72 0%, #15a085 100%);
+  cursor: pointer;
+}
+
+/* Firefox scrollbar */
+.chat-scroll-container {
+  scrollbar-width: thin;
+  scrollbar-color: #25D366 rgba(255, 255, 255, 0.05);
+}
