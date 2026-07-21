@@ -10,6 +10,7 @@ const FloatingAIBot: React.FC = () => {
     messages,
     isLoading,
     inputText,
+    chatWindowRef,
     messagesEndRef,
     inputRef,
     setInputText,
@@ -36,23 +37,8 @@ const FloatingAIBot: React.FC = () => {
         onKeyPress={handleKeyPress}
         messagesEndRef={messagesEndRef}
         inputRef={inputRef}
+        chatWindowRef = {chatWindowRef}
       />
-
-      <style>{`
-        * {
-          box-sizing: border-box;
-        }
-        ::-webkit-scrollbar {
-          width: 5px;
-        }
-        ::-webkit-scrollbar-track {
-          background: transparent;
-        }
-        ::-webkit-scrollbar-thumb {
-          background: linear-gradient(180deg, #25D366, #128C7E);
-          border-radius: 999px;
-        }
-      `}</style>
     </>
   );
 };

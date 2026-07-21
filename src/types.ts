@@ -18,4 +18,5 @@ export interface ChatWindowProps {
   onKeyPress: (e: React.KeyboardEvent) => void;
   messagesEndRef: React.RefObject<HTMLDivElement>;
   inputRef: React.RefObject<HTMLInputElement>;
+  chatWindowRef: React.RefObject<HTMLDivElement>;
 }

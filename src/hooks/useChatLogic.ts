@@ -12,6 +12,7 @@ export const useChatLogic = () => {
       timestamp: new Date(),
     },
   ]);
+  const chatWindowRef = useRef<HTMLDivElement>(null);
   const [inputText, setInputText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -42,6 +43,8 @@ export const useChatLogic = () => {
       document.body.style.overflow = '';
     };
   }, [isOpen]);
+
+  
 
   const getAIResponse = (): string => {
     const responses = [
@@ -95,6 +98,25 @@ export const useChatLogic = () => {
     setIsMinimized(false);
   };
 
+  useEffect(() => {
+  function handlePointerDown(event: MouseEvent | TouchEvent) {
+    if (
+      chatWindowRef.current &&
+      !chatWindowRef.current.contains(event.target as Node)
+    ) {
+      toggleChat(); // Close the chat
+    }
+  }
+
+  document.addEventListener("mousedown", handlePointerDown);
+  document.addEventListener("touchstart", handlePointerDown);
+
+  return () => {
+    document.removeEventListener("mousedown", handlePointerDown);
+    document.removeEventListener("touchstart", handlePointerDown);
+  };
+}, [toggleChat]);
+
   const toggleMinimize = () => setIsMinimized(!isMinimized);
 
   return {
@@ -103,6 +125,7 @@ export const useChatLogic = () => {
     messages,
     isLoading,
     inputText,
+    chatWindowRef,
     messagesEndRef,
     inputRef,
     setInputText,

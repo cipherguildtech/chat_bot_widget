@@ -1,8 +1,8 @@
+import './index.css'
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createShadowRoot } from "./lib/shadowRoot";
-import "./styles/widget.css";
 import App from "./App";
+
 
 declare global {
   interface Window {
@@ -14,13 +14,15 @@ declare global {
 }
 
 (function () {
-  const shadowRoot = createShadowRoot();
+  let container = document.getElementById("my-widget-root");
 
-  const mountPoint = document.createElement("div");
+if (!container) {
+  container = document.createElement("div");
+  container.id = "my-widget-root";
+  document.body.appendChild(container);
+}
 
-  shadowRoot.appendChild(mountPoint);
-
-  ReactDOM.createRoot(mountPoint).render(
+  ReactDOM.createRoot(container).render(
     <React.StrictMode>
       <App/>
     </React.StrictMode>

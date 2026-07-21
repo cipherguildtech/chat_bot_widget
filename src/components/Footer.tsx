@@ -24,7 +24,6 @@ const Footer: React.FC<FooterProps> = ({
             className="px-4 py-3 border-t border-white/10"
             style={{
                 background: 'rgba(0,0,0,0.3)',
-                backdropFilter: 'blur(10px)',
             }}
         >
             <div className="flex items-center gap-2">
