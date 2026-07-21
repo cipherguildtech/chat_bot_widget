@@ -18,12 +18,13 @@ const Header: React.FC<HeaderProps> = ({
       style={{ background: 'rgba(18,140,126,0.15)' }}
     >
       <div>
-        <h3 className="font-semibold text-white text-base">AI Assistant</h3>
+        <h3 className="font-semibold !text-white text-base" > Assistant</h3>
         <p className="text-xs text-emerald-300/80 flex items-center mt-0.5">
           <span className="inline-block w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse" />
           Online
         </p>
       </div>
+
       <div className="flex items-center gap-1 text-white/70">
         <button
           onClick={onToggleMinimize}

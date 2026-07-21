@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createShadowRoot } from "./lib/shadowRoot";
-
 import "./styles/widget.css";
 import App from "./App";
 
