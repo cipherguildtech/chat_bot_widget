@@ -3,7 +3,23 @@ import FloatingButton from '../components/FloatingButton';
 import ChatWindow from '../components/ChatWindow';
 import { useChatLogic } from '../hooks/useChatLogic';
 
-const FloatingAIBot: React.FC = () => {
+interface FloatingAIBotProps {
+  position: string;
+  bg_color: string;
+  button_bg_color: string;
+  button_fg_color: string;
+  fg_color: string;
+  text_color:string;
+}
+
+const FloatingAIBot: React.FC<FloatingAIBotProps> = ({
+  position,
+  bg_color,
+   button_bg_color,
+    button_fg_color, 
+    fg_color,
+    text_color,
+}) => {
   const {
     isOpen,
     isMinimized,
@@ -22,8 +38,8 @@ const FloatingAIBot: React.FC = () => {
 
   return (
     <>
-      <FloatingButton isOpen={isOpen} onClick={toggleChat} />
-      
+      <FloatingButton isOpen={isOpen} onClick={toggleChat} bg_color={button_bg_color} fg_color={button_fg_color} position={position} />
+
       <ChatWindow
         isOpen={isOpen}
         isMinimized={isMinimized}
@@ -37,7 +53,11 @@ const FloatingAIBot: React.FC = () => {
         onKeyPress={handleKeyPress}
         messagesEndRef={messagesEndRef}
         inputRef={inputRef}
-        chatWindowRef = {chatWindowRef}
+        chatWindowRef={chatWindowRef}
+        position={position}
+        bg_color={bg_color}
+        fg_color={fg_color}
+        text_color={text_color}
       />
     </>
   );

@@ -19,7 +19,12 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   messagesEndRef,
   inputRef,
   chatWindowRef,
+  position,
+  bg_color,
+  fg_color,
+  text_color,
 }) => {
+  const isLeft = position.toLowerCase() === 'left';
   return (
     <AnimatePresence>
       {isOpen && (
@@ -28,28 +33,40 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
           {/* Chat Window */}
           <motion.div
             ref={chatWindowRef}
-            initial={{ x: '100%' }}
+            initial={{ x: isLeft ? '-100%' : '100%' }}
             animate={{ x: 0 }}
-            exit={{ x: '100%' }}
+            exit={{ x: isLeft ? '-100%' : '100%' }}
             transition={{
               type: 'spring',
               damping: 30,
               stiffness: 300,
               duration: 0.3
             }}
-            className="fixed right-0 top-0 z-[10000] flex flex-col"
+            className={`fixed top-0 ${isLeft ? 'left-0' : 'right-0'
+              } z-[10000] flex flex-col`}
             style={{
               width: '380px',
               height: '100vh',
-              background: 'linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)',
-              boxShadow: '-8px 0 40px rgba(0,0,0,0.6)',
-              borderLeft: '1px solid rgba(255,255,255,0.05)',
+              background:
+                'linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)',
+              boxShadow: isLeft
+                ? '8px 0 40px rgba(0,0,0,0.6)'
+                : '-8px 0 40px rgba(0,0,0,0.6)',
+              borderRight: isLeft
+                ? '1px solid rgba(255,255,255,0.05)'
+                : undefined,
+              borderLeft: !isLeft
+                ? '1px solid rgba(255,255,255,0.05)'
+                : undefined,
             }}
           >
             <Header
               isMinimized={isMinimized}
               onToggleMinimize={onToggleMinimize}
               onToggleChat={onToggleChat}
+              bg_color={bg_color}
+              fg_color={fg_color}
+              text_color={text_color}
             />
 
             {!isMinimized && (
@@ -58,6 +75,9 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
                   messages={messages}
                   isLoading={isLoading}
                   messagesEndRef={messagesEndRef}
+                  bg_color={bg_color}
+              fg_color={fg_color}
+              text_color={text_color}
                 />
                 <Footer
                   inputText={inputText}
@@ -66,6 +86,9 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
                   onSendMessage={onSendMessage}
                   onKeyPress={onKeyPress}
                   inputRef={inputRef}
+                  bg_color={bg_color}
+              fg_color={fg_color}
+              text_color={text_color}
                 />
               </div>
             )}

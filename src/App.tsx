@@ -1,14 +1,84 @@
 
+import axios from "axios";
+import { fetchBotCustomaization } from "./api/company_api";
 import FloatingAIBot from "./components/FloatingAIBot";
+import { useEffect, useState } from "react";
 export default function App() {
-  return (
-    <div style={{ padding: 50 }}>
+  const [loading, setLoading] = useState(true)
+  type BotCustomization = {
+    status: string;
+    data: {
+      bg_color: string;
+      fg_color: string;
+      button_bg_color: string;
+      button_fg_color: string;
+      position: string;
+      text_color:string;
+    };
+  };
 
-      <FloatingAIBot />
-    </div>
-  );
+  const [docs, setDocs] = useState<BotCustomization | null>(null);
+  useEffect(() => {
+    handleFetch();
+  }, []);
+  async function handleFetch() {
+    try {
+
+      const doc = await fetchBotCustomaization();
+      setDocs(doc)
+
+    }
+    catch (err: any) {
+      if (axios.isAxiosError(err)) {
+        if (err.response?.status === 401) {
+          setDocsFetchError("Unauthorized access");
+
+
+        }
+        else if (err.response?.status === 404) {
+
+        }
+        else {
+          setDocsFetchError("Something went wrong");
+        }
+      }
+
+    }
+    finally {
+      setLoading(false);
+    }
+  }
+  if (loading) {
+    return (
+      <div></div>
+    );
+  }
+  else {
+    return (
+      <div style={{ padding: 50 }}>
+
+        {docs && (
+          <FloatingAIBot
+            bg_color={docs.data.bg_color}
+            fg_color={docs.data.fg_color}
+            button_bg_color={docs.data.button_bg_color}
+            button_fg_color={docs.data.button_fg_color}
+            position={docs.data.position}
+            text_color={docs.data.text_color}
+          />
+        )}      </div>
+    );
+  }
+
 }
 
+
+function setDocsFetchError(arg0: string
+
+) {
+
+  throw new Error(arg0);
+}
 // import { useState } from 'react'
 // import reactLogo from './assets/react.svg'
 // import viteLogo from './assets/vite.svg'

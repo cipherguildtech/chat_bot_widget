@@ -1,46 +1,82 @@
 import React from 'react';
-import { X,  } from 'lucide-react';
-//Minimize2, Maximize2
+import { X } from 'lucide-react';
+
 interface HeaderProps {
   isMinimized: boolean;
   onToggleMinimize: () => void;
   onToggleChat: () => void;
+  bg_color: string;
+  fg_color: string;
+  text_color: string;
 }
 
+// Convert Hex color to RGBA
+const hexToRgba = (hex: string, alpha: number) => {
+  const sanitized = hex.replace('#', '');
+
+  if (sanitized.length !== 6) {
+    return `rgba(0,0,0,${alpha})`;
+  }
+
+  const bigint = parseInt(sanitized, 16);
+
+  const r = (bigint >> 16) & 255;
+  const g = (bigint >> 8) & 255;
+  const b = bigint & 255;
+
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+};
+
 const Header: React.FC<HeaderProps> = ({
-  // isMinimized,
-  // onToggleMinimize,
   onToggleChat,
+  bg_color,
+  fg_color,
+  text_color,
 }) => {
   return (
     <div
-      className="flex items-center justify-between px-5 py-4 border-b border-white/10"
-      style={{ background: 'rgba(18,140,126,0.15)' }}
+      className="flex items-center justify-between px-5 py-4 border-b"
+      style={{
+        backgroundColor: hexToRgba(bg_color, 0.25),
+        borderColor: hexToRgba(bg_color, 0.25),
+      }}
     >
       <div>
-        <h3 className="font-semibold !text-white text-base" > Assistant</h3>
-        <p className="text-xs text-emerald-300/80 flex items-center mt-0.5">
-          <span className="inline-block w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse" />
+        <h3
+          className="font-semibold text-base"
+          style={{ color: text_color }}
+        >
+          Assistant
+        </h3>
+
+        <p
+          className="text-xs flex items-center mt-0.5"
+          style={{ color: fg_color }}
+        >
+          <span
+            className="inline-block w-2 h-2 rounded-full mr-2 animate-pulse"
+            style={{ backgroundColor: fg_color }}
+          />
           Online
         </p>
       </div>
 
-      <div className="flex items-center gap-1 text-white/70">
-        {/* <button
-          onClick={onToggleMinimize}
-          className="p-2 hover:bg-white/10 rounded-lg transition-colors"
-          aria-label={isMinimized ? 'Maximize' : 'Minimize'}
-        >
-          {isMinimized ? <Maximize2 className="w-4 h-4" /> : <Minimize2 className="w-4 h-4" />}
-        </button> */}
-        <button
-          onClick={onToggleChat}
-          className="p-2 hover:bg-white/10 rounded-lg transition-colors"
-          aria-label="Close chat"
-        >
-          <X className="w-4 h-4" />
-        </button>
-      </div>
+      <button
+        onClick={onToggleChat}
+        className="p-2 rounded-lg transition-colors duration-200"
+        style={{
+          color: text_color,
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.backgroundColor = hexToRgba(bg_color, 0.2);
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.backgroundColor = 'transparent';
+        }}
+        aria-label="Close chat"
+      >
+        <X className="w-5 h-5" />
+      </button>
     </div>
   );
 };

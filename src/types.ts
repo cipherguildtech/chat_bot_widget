@@ -19,4 +19,8 @@ export interface ChatWindowProps {
   messagesEndRef: React.RefObject<HTMLDivElement>;
   inputRef: React.RefObject<HTMLInputElement>;
   chatWindowRef: React.RefObject<HTMLDivElement>;
+  position:string;
+  bg_color:string;
+  fg_color:string;
+  text_color:string;
 }
