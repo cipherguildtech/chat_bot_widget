@@ -1,7 +1,7 @@
 import React from 'react';
 import type { RefObject } from 'react';
 import { Send, Loader2 } from 'lucide-react';
-
+ 
 interface FooterProps {
   inputText: string;
   isLoading: boolean;
@@ -42,9 +42,11 @@ const Footer: React.FC<FooterProps> = ({
   fg_color,
   text_color,
 }) => {
+ 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
+      // onKeyPress(e);
       onKeyPress(e);
     }
   };

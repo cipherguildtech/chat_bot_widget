@@ -6,15 +6,15 @@ import { useEffect, useState } from "react";
 export default function App() {
   const [loading, setLoading] = useState(true)
   type BotCustomization = {
-    status: string;
-    data: {
+    // status: string;
+    // data: {
       bg_color: string;
       fg_color: string;
       button_bg_color: string;
       button_fg_color: string;
       position: string;
       text_color:string;
-    };
+    // };
   };
 
   const [docs, setDocs] = useState<BotCustomization | null>(null);
@@ -24,7 +24,9 @@ export default function App() {
   async function handleFetch() {
     try {
 
+
       const doc = await fetchBotCustomaization();
+      
       setDocs(doc)
 
     }
@@ -59,12 +61,12 @@ export default function App() {
 
         {docs && (
           <FloatingAIBot
-            bg_color={docs.data.bg_color}
-            fg_color={docs.data.fg_color}
-            button_bg_color={docs.data.button_bg_color}
-            button_fg_color={docs.data.button_fg_color}
-            position={docs.data.position}
-            text_color={docs.data.text_color}
+            bg_color={docs.bg_color}
+            fg_color={docs.fg_color}
+            button_bg_color={docs.button_bg_color}
+            button_fg_color={docs.button_fg_color}
+            position={docs.position}
+            text_color={docs.text_color}
           />
         )}      </div>
     );

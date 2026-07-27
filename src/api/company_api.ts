@@ -4,7 +4,13 @@ import api from './axios';
 export async function fetchBotCustomaization(//companyId: string
 
 ) {
-    const response = await api.get('demo.php');
+
+    const response = await api.post('/clients/client/chatbot_config/get', {
+
+        client_id: 'client1'
+
+    });
+    
     return response.data;
 }
 

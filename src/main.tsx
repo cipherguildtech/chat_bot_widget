@@ -2,7 +2,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import WidgetTracker from './utils/tracking';
+// import WidgetTracker from './utils/tracking';
 import './index.css';
 
 // Initialize widget
@@ -16,7 +16,7 @@ const initializeWidget = () => {
   }
 
   // Track installation early so the widget origin is recorded as soon as it initializes.
-  void WidgetTracker.trackInstallation();
+  // void WidgetTracker.trackInstallation();
 
   // Render the widget
   const root = ReactDOM.createRoot(container);
