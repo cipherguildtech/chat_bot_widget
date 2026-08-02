@@ -1,5 +1,4 @@
-import React, { useMemo, useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import React, { useMemo, useState, useEffect, useRef, useCallback } from 'react';
 import type { Message } from '../types';
 import './Chats.css';
 
@@ -22,12 +21,10 @@ const hexToRgba = (hex: string, alpha: number) => {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 };
 
-// Component to handle async message content
 const MessageContent: React.FC<{ content: Promise<string> | string }> = ({ content }) => {
   const [resolvedContent, setResolvedContent] = useState<string>('');
 
   useEffect(() => {
-    // If content is a Promise, resolve it
     if (content instanceof Promise) {
       content.then(setResolvedContent);
     } else {
@@ -46,13 +43,16 @@ const Chats: React.FC<ChatsProps> = ({
   fg_color,
   text_color,
 }) => {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const prevMessagesLengthRef = useRef(messages.length);
+  const shouldScrollRef = useRef(false);
+
   const formatTime = (date: Date) =>
     date.toLocaleTimeString('en-US', {
       hour: '2-digit',
       minute: '2-digit',
     });
 
-  // Memoize styles to prevent recreation on every render
   const styles = useMemo(() => ({
     scrollbarTrack: hexToRgba(bg_color, 0.08),
     scrollbarThumb: fg_color,
@@ -65,11 +65,68 @@ const Chats: React.FC<ChatsProps> = ({
     emptyIconBg: hexToRgba(bg_color, 0.15),
   }), [bg_color, fg_color]);
 
+  // Scroll to bottom - only called for user messages
+  const scrollToBottom = useCallback((behavior: ScrollBehavior = 'smooth') => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTo({
+        top: scrollContainerRef.current.scrollHeight,
+        behavior,
+      });
+    }
+  }, []);
+
+  // Handle new messages - ONLY scroll on user messages
+  useEffect(() => {
+    const hasNewMessages = messages.length > prevMessagesLengthRef.current;
+
+    if (hasNewMessages) {
+      const lastMessage = messages[messages.length - 1];
+      
+      // ONLY scroll when user sends a message
+      if (lastMessage?.type === 'user') {
+        shouldScrollRef.current = true;
+        setTimeout(() => {
+          scrollToBottom('auto');
+          setTimeout(() => {
+            shouldScrollRef.current = false;
+          }, 100);
+        }, 50);
+      }
+      // Bot messages: DO ABSOLUTELY NOTHING
+    }
+
+    prevMessagesLengthRef.current = messages.length;
+  }, [messages, scrollToBottom]);
+
+  // Initial scroll to bottom
+  useEffect(() => {
+    setTimeout(() => scrollToBottom('auto'), 100);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Block messagesEndRef from auto-scrolling on bot messages
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      const originalScrollIntoView = messagesEndRef.current.scrollIntoView;
+      
+      messagesEndRef.current.scrollIntoView = function (options?: boolean | ScrollIntoViewOptions) {
+        // Only allow scroll if it was triggered by a user message
+        if (shouldScrollRef.current) {
+          originalScrollIntoView.call(this, options);
+        }
+        // Otherwise, block all scroll attempts
+      };
+    }
+
+    return () => {
+      if (messagesEndRef.current) {
+        // Restore original method on cleanup
+      }
+    };
+  }, [messagesEndRef]);
+
   const EmptyState = () => (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.2 }}
+    <div
       className="flex flex-col items-center justify-center h-full text-center px-4"
     >
       <div
@@ -100,49 +157,41 @@ const Chats: React.FC<ChatsProps> = ({
       >
         Start a conversation by typing a message below
       </p>
-    </motion.div>
+    </div>
   );
 
-  const MessageBubble = ({ message, index }: { message: Message; index: number }) => {
+  const MessageBubble = ({ message }: { message: Message; index: number }) => {
     const isUser = message.type === 'user';
-    
+
     return (
-      <motion.div
+      <div
         key={message.id}
-        initial={{ opacity: 0, y: 20, scale: 0.95 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{
-          delay: index * 0.05,
-          type: 'spring',
-          stiffness: 100,
-          damping: 15,
-        }}
-        className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}
+        className={`flex ${isUser ? 'justify-end' : 'justify-start'} mb-3`}
       >
         <div
           className="max-w-[80%] px-4 py-2.5 rounded-2xl text-sm shadow-lg"
           style={
             isUser
               ? {
-                  background: styles.userMessageBg,
-                  color: styles.userMessageColor,
-                  borderBottomRightRadius: 4,
-                  wordWrap: 'break-word',
-                  overflowWrap: 'break-word',
-                  whiteSpace: 'pre-wrap',
-                  boxShadow: `0 4px 12px ${styles.userMessageShadow}`,
-                }
+                background: styles.userMessageBg,
+                color: styles.userMessageColor,
+                borderBottomRightRadius: 4,
+                wordWrap: 'break-word',
+                overflowWrap: 'break-word',
+                whiteSpace: 'pre-wrap',
+                boxShadow: `0 4px 12px ${styles.userMessageShadow}`,
+              }
               : {
-                  background: styles.botMessageBg,
-                  color: text_color,
-                  border: `1px solid ${styles.botMessageBorder}`,
-                  borderBottomLeftRadius: 4,
-                  wordWrap: 'break-word',
-                  overflowWrap: 'break-word',
-                  whiteSpace: 'pre-wrap',
-                  backdropFilter: 'blur(10px)',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
-                }
+                background: styles.botMessageBg,
+                color: text_color,
+                border: `1px solid ${styles.botMessageBorder}`,
+                borderBottomLeftRadius: 4,
+                wordWrap: 'break-word',
+                overflowWrap: 'break-word',
+                whiteSpace: 'pre-wrap',
+                backdropFilter: 'blur(10px)',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+              }
           }
         >
           <p
@@ -166,16 +215,12 @@ const Chats: React.FC<ChatsProps> = ({
             {formatTime(message.timestamp)}
           </span>
         </div>
-      </motion.div>
+      </div>
     );
   };
 
   const LoadingIndicator = () => (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="flex justify-start"
-    >
+    <div className="flex justify-start mb-3">
       <div
         className="rounded-2xl px-4 py-2.5 flex items-center gap-2 backdrop-blur-sm"
         style={{
@@ -185,16 +230,13 @@ const Chats: React.FC<ChatsProps> = ({
       >
         <span className="flex gap-1">
           {[0, 1, 2].map((i) => (
-            <motion.span
+            <span
               key={i}
               className="w-2 h-2 rounded-full"
-              style={{ backgroundColor: fg_color }}
-              animate={{ y: [0, -6, 0] }}
-              transition={{
-                duration: 0.6,
-                repeat: Infinity,
-                delay: i * 0.15,
-                ease: 'easeInOut',
+              style={{
+                backgroundColor: fg_color,
+                animation: 'bounce 0.6s infinite',
+                animationDelay: `${i * 0.15}s`
               }}
             />
           ))}
@@ -203,7 +245,7 @@ const Chats: React.FC<ChatsProps> = ({
           thinking...
         </span>
       </div>
-    </motion.div>
+    </div>
   );
 
   return (
@@ -226,9 +268,18 @@ const Chats: React.FC<ChatsProps> = ({
           scrollbar-width: thin;
           scrollbar-color: ${styles.scrollbarThumb} ${styles.scrollbarTrack};
         }
+        
+        @keyframes bounce {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-6px); }
+        }
       `}</style>
 
-      <div className="chat-scroll-container space-y-3 p-4 overflow-y-auto flex-1">
+      <div
+        ref={scrollContainerRef}
+        className="chat-scroll-container p-4 overflow-y-auto flex-1"
+        style={{ height: '100%' }}
+      >
         {messages.length === 0 ? (
           <EmptyState />
         ) : (

@@ -1,5 +1,5 @@
-import React from 'react';
-import type { RefObject } from 'react';
+import React, { useState } from 'react';
+import type { KeyboardEventHandler, RefObject } from 'react';
 import { Send, Loader2 } from 'lucide-react';
  
 interface FooterProps {
@@ -32,9 +32,9 @@ const hexToRgba = (hex: string, alpha: number) => {
 };
 
 const Footer: React.FC<FooterProps> = ({
-  inputText,
+  // inputText,
   isLoading,
-  onInputChange,
+  // onInputChange,
   onSendMessage,
   onKeyPress,
   inputRef,
@@ -42,16 +42,35 @@ const Footer: React.FC<FooterProps> = ({
   fg_color,
   text_color,
 }) => {
- 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+ const handleKeyPress: KeyboardEventHandler<HTMLInputElement> = (e) => {
+     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      // onKeyPress(e);
+      const trimmedText = inputText1.trim();
+      if (trimmedText && !isLoading) {
+        onSendMessage(trimmedText);
+        // Clear input after sending
+        setInputText1('');
+      }
+    }
+    // Call the parent's onKeyPress if provided
+    if (onKeyPress) {
       onKeyPress(e);
     }
   };
 
-  const isDisabled = !inputText.trim() || isLoading;
+  // const handleKeyPress   = (e: FormEventHandler<HTMLFormElement>) => {
+  //   console.log("Key pressed: %s", e);
+    // if (e.key === 'Enter' && !e.shiftKey) {
+      
+    //   e.preventDefault();
+    //   // onKeyPress(e);
+    //   onKeyPress(e);
+    // }
+    
+  // };
+
+  const [inputText1, setInputText1] = useState('');
+  const isDisabled = !inputText1.trim() || isLoading;
 
   return (
     <div
@@ -65,9 +84,13 @@ const Footer: React.FC<FooterProps> = ({
         <input
           ref={inputRef}
           type="text"
-          value={inputText}
-          onChange={(e) => onInputChange(e.target.value)}
-          onKeyPress={handleKeyPress}
+          value={inputText1}
+          onChange={(e) =>{ 
+            
+            setInputText1(e.target.value)}}
+          // onChange={(e) => onInputChange(e.target.value)}
+      
+          onKeyUp={handleKeyPress}
           placeholder="Type a message..."
           disabled={isLoading}
           autoFocus
@@ -81,7 +104,15 @@ const Footer: React.FC<FooterProps> = ({
         />
 
         <button
-          onClick={() => onSendMessage(inputText)}
+          onClick={() => {
+            const trimmedText = inputText1.trim();
+            if (trimmedText) {
+              setInputText1('');
+              onSendMessage(trimmedText);
+              
+            }
+            
+          }}
           disabled={isDisabled}
           aria-label="Send message"
           className="p-2.5 rounded-full transition-all flex-shrink-0"

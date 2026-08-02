@@ -19,12 +19,16 @@ export const useChatLogic = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Scroll to bottom when messages change
-  useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [messages, isLoading]);
+  // Scroll to bottom only when the newest message is from the user
+  // useEffect(() => {
+  //   if (!messagesEndRef.current) return;
+
+  //   const lastMessage = messages[messages.length - 1];
+  //   // Only auto-scroll when the last message was sent by the user
+  //   if (lastMessage?.type === 'user') {
+  //     messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+  //   }
+  // }, [messages]);
 
   // Focus input when chat opens
   useEffect(() => {
