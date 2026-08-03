@@ -23,4 +23,5 @@ export interface ChatWindowProps {
   bg_color:string;
   fg_color:string;
   text_color:string;
+  clientId:string;
 }

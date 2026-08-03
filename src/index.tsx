@@ -6,9 +6,8 @@ import App from "./App";
 
 declare global {
   interface Window {
-    MyWidget?: {
-      // apiKey?: string;
-      theme?: "light" | "dark";
+    MyWidget: {
+      clientId: string;
     };
   }
 }
@@ -24,7 +23,10 @@ if (!container) {
 
   ReactDOM.createRoot(container).render(
     <React.StrictMode>
-      <App/>
+      <App 
+              clientId={window.MyWidget.clientId.toString()}
+
+      />
     </React.StrictMode>
   );
 })();

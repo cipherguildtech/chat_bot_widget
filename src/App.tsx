@@ -3,17 +3,22 @@ import axios from "axios";
 import { fetchBotCustomaization } from "./api/company_api";
 import FloatingAIBot from "./components/FloatingAIBot";
 import { useEffect, useState } from "react";
-export default function App() {
+import { trackLink } from "./api/track-widget";
+interface AppProps {
+
+  clientId: string;
+}
+const App: React.FC<AppProps> = ({ clientId }) => {
   const [loading, setLoading] = useState(true)
   type BotCustomization = {
     // status: string;
     // data: {
-      bg_color: string;
-      fg_color: string;
-      button_bg_color: string;
-      button_fg_color: string;
-      position: string;
-      text_color:string;
+    bg_color: string;
+    fg_color: string;
+    button_bg_color: string;
+    button_fg_color: string;
+    position: string;
+    text_color: string;
     // };
   };
 
@@ -23,10 +28,15 @@ export default function App() {
   }, []);
   async function handleFetch() {
     try {
+       
+      const res = await trackLink(clientId);
+       
+      if (res === 401) {
+        setDocsFetchError("Unauthorized access");
+        return;
+      }
+      const doc = await fetchBotCustomaization(clientId);
 
-
-      const doc = await fetchBotCustomaization();
-      
       setDocs(doc)
 
     }
@@ -67,13 +77,14 @@ export default function App() {
             button_fg_color={docs.button_fg_color}
             position={docs.position}
             text_color={docs.text_color}
+            clientId={clientId}
           />
         )}      </div>
     );
   }
 
 }
-
+export default App;
 
 function setDocsFetchError(arg0: string
 

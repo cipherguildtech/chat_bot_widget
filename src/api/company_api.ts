@@ -1,13 +1,12 @@
 import api from './axios';
-// import { ChatHistoryChat, Chat, QueryRequest } from '@/types/chats';
-
-export async function fetchBotCustomaization(//companyId: string
+ 
+export async function fetchBotCustomaization(clientId: string
 
 ) {
 
     const response = await api.post('/clients/client/chatbot_config/get', {
 
-        client_id: 'client1'
+        client_id: clientId
 
     });
     

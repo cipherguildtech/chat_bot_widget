@@ -10,6 +10,7 @@ interface FloatingAIBotProps {
   button_fg_color: string;
   fg_color: string;
   text_color:string;
+  clientId:string;
 }
 
 const FloatingAIBot: React.FC<FloatingAIBotProps> = ({
@@ -19,6 +20,7 @@ const FloatingAIBot: React.FC<FloatingAIBotProps> = ({
     button_fg_color, 
     fg_color,
     text_color,
+    clientId
 }) => {
   const {
     isOpen,
@@ -34,7 +36,7 @@ const FloatingAIBot: React.FC<FloatingAIBotProps> = ({
     handleKeyPress,
     toggleChat,
     toggleMinimize,
-  } = useChatLogic();
+  } = useChatLogic({ clientId });
 
   return (
     <>
@@ -58,6 +60,7 @@ const FloatingAIBot: React.FC<FloatingAIBotProps> = ({
         bg_color={bg_color}
         fg_color={fg_color}
         text_color={text_color}
+        clientId={clientId}
       />
     </>
   );
